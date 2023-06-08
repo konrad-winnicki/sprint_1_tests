@@ -1,0 +1,18 @@
+{
+  "name": "sprint_1_tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "nivel_1": "npx jest --testPathPattern=nivel_1.test.js",
+    "nivel_2_class": "npx jest --testPathPattern=nivel_2_class.test.js",
+    "nivel_2_doblados": "npx jest --testPathPattern=nivel_2_doblados.test.js",
+    "nivel_3_json": "npx jest --testPathPattern=nivel_3_json.test.js"
+  },
+  "author": "Konrad Winnicki",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
