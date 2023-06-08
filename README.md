@@ -29,7 +29,7 @@ $ npm install <dev_dependencies> --save-dev
 <br>
 
 ## Usage
-Using command line you can run tests from particular file or run test from all provided files simultaneously.
+Using command line you can run tests from the particular file or run test from all provided files simultaneously.
 ```shell
 $ npm run nivel_1 // use first part of file name befor dot
 ```
