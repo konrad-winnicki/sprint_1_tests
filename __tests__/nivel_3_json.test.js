@@ -1,5 +1,5 @@
 const fs = require("fs");
-let { getEmployee, getSalary } = require("../app/nivel_3_json")
+let { getEmployee, getSalary, readFile } = require("../app/nivel_3_json");
 jest.mock("fs");
 
 describe("The 'getEmployee()' function:", () => {
@@ -9,7 +9,9 @@ describe("The 'getEmployee()' function:", () => {
       { id: 1, name: "Mafalda" },
     ]);
     fs.readFileSync.mockReturnValue(json);
-    return expect(getEmployee(1, "mockedPath", "MockedPath")).resolves.toEqual({
+    return expect(
+      getEmployee(1, "mockedPath", "MockedPath", readFile)
+    ).resolves.toEqual({
       id: 1,
       name: "Mafalda",
     });
@@ -21,9 +23,9 @@ describe("The 'getEmployee()' function:", () => {
       { id: 1, name: "Mafalda" },
     ]);
     fs.readFileSync.mockReturnValue(json);
-    return expect(getEmployee(3, "mockedPath", "MockedPath")).rejects.toEqual(
-      new Error("No such employee")
-    );
+    return expect(
+      getEmployee(3, "mockedPath", "mockedPath", readFile)
+    ).rejects.toEqual(new Error("No such employee"));
   });
 
   test("should reject with 'I can not process this data' if not valid param", () => {
@@ -32,34 +34,37 @@ describe("The 'getEmployee()' function:", () => {
       { id: 1, name: "Mafalda" },
     ]);
     fs.readFileSync.mockReturnValue(json);
-    const validArgument = "valid";
+    const notValidArgument = "string";
     return expect(
-      getEmployee(validArgument, "mockedPath", "MockedPath")
+      getEmployee(notValidArgument, "mockedPath", "MockedPath", readFile)
     ).rejects.toEqual(new Error("I can not process this data"));
   });
 
   test("should reject with 'I can not process this data' if not id in object", () => {
-    const json = JSON.stringify([
-      { name: "Jose" },
-      {name: "Mafalda" },
-    ]);
+    const json = JSON.stringify([{ name: "Jose" }, { name: "Mafalda" }]);
     fs.readFileSync.mockReturnValue(json);
-    const validArgument = "valid";
     return expect(
-      getEmployee(validArgument, "mockedPath", "MockedPath")
+      getEmployee(1, "mockedPath", "MockedPath", readFile)
     ).rejects.toEqual(new Error("I can not process this data"));
   });
-  
-  test("should reject with 'I can not process this data' if no id in file", () => {
-    const json = JSON.stringify([
-      {name: "Jose" },
-     { name: "Mafalda" },
-    ]);
-     fs.readFileSync.mockReturnValue(json);
 
-    return expect(getEmployee(1, "mockedPath", "MockedPath")).rejects.toEqual(new Error("I can not process this data"))
+  test("should reject with 'I can not process this data' if no id in file", () => {
+    const json = JSON.stringify([{ name: "Jose" }, { name: "Mafalda" }]);
+    fs.readFileSync.mockReturnValue(json);
+
+    return expect(
+      getEmployee(1, "mockedPath", "MockedPath", readFile)
+    ).rejects.toEqual(new Error("I can not process this data"));
   });
-  
+
+  test("should throw Error when wrong path to file", () => {
+    const mockCallback = jest.fn(() => {
+      throw new Error("Wrong path");
+    });
+    expect(() =>
+      getEmployee(1, "mockedPath", "MockedPath", mockCallback)
+    ).toThrow(new Error("Wrong path"));
+  });
 });
 
 describe("The 'getSalary()' function:", () => {
@@ -72,61 +77,50 @@ describe("The 'getSalary()' function:", () => {
     fs.readFileSync.mockReturnValue(json);
 
     return expect(
-      getSalary(employee, "mockedPath", "MockedPath")
+      getSalary(employee, "mockedPath", "MockedPath", readFile)
     ).resolves.toBe(2000);
   });
 
   test("should reject with 'No such assignated' if salary for employee not in the file", () => {
     const json = JSON.stringify([
-      { id: 0, salary:1000 },
-      { id: 3, salary: 2000},
+      { id: 0, salary: 1000 },
+      { id: 3, salary: 2000 },
     ]);
     fs.readFileSync.mockReturnValue(json);
     return expect(
-      getSalary(employee, "mockedPath", "MockedPath")
+      getSalary(employee, "mockedPath", "MockedPath", readFile)
     ).rejects.toEqual(new Error("Salary not asignated"));
   });
 
   test("should reject with 'I can not process this data' if not valid param", () => {
     const json = JSON.stringify([
       { id: 0, salary: 1000 },
-      { id: 1, salary:2000 },
+      { id: 1, salary: 2000 },
     ]);
     fs.readFileSync.mockReturnValue(json);
     const notValidArgument = "string";
     return expect(
-      getSalary(notValidArgument, "mockedPath", "MockedPath")
+      getSalary(notValidArgument, "mockedPath", "MockedPath", readFile)
     ).rejects.toEqual(new Error("I can not process this data"));
   });
 
   test("should reject with 'I can not process this data' if no id in file", () => {
-    const json = JSON.stringify([
-      { salary: 1000},
-      { salary: 2000 },
-    ]);
+    const json = JSON.stringify([{ salary: 1000 }, { salary: 2000 }]);
     fs.readFileSync.mockReturnValue(json);
     const validArgument = { id: 0, name: "Jose" };
     return expect(
-      getSalary(validArgument, "mockedPath", "MockedPath")
+      getSalary(validArgument, "mockedPath", "MockedPath", readFile)
     ).rejects.toEqual(new Error("I can not process this data"));
   });
 
-  
-    
-/*
-    test("should reject with 'I can not process this data' if not id in object", () => {
-      
-        const { readFile } = require("../entrance1.3/n2e1.json/index");
-    
-        jest.mock("../entrance1.3/n2e1.json/index", () => ({
-          readFile: jest.fn().mockImplementation(() => {
-              throw new Error("dupa")}),
-        }));
-        readFile.mockReturnValue(() => {
-          throw new Error("dupa");
-        });
-    
-        getsalary(1, "mockedPath", "MockedPath").catch((err) => console.log(err));
-      });
-    */
+  test("should throw Error when wrong path to file", () => {
+    const mockCallback = jest.fn(() => {
+      throw new Error("Wrong path");
+    });
+    expect(() =>
+      getSalary(1, "mockedPath", "MockedPath", mockCallback)
+    ).toThrow(new Error("Wrong path"));
+  });
 });
+
+

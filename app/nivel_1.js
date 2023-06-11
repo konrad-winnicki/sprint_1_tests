@@ -1,9 +1,7 @@
 /*Crea un arxiu amb les funcions sumar, restar, multiplicar i dividir dos o 
 més operands. Testeja la correcta execució d'aquestes funcions.*/
 
-
 /*****MATH FUNCTIONS*****/
-
 
 function sum(...args) {
   if (args.length < 2) {
@@ -122,9 +120,7 @@ function getSalary(employee, salaryList) {
 /*Crea els tests corresponents per verificar el funcionament de l'exercici 
 Async / Await N1 E2.*/
 
-
 /*****Entrance 1.4 N1E2*****/
-
 
 const promise = () => {
   return new Promise((res) => {
@@ -146,6 +142,6 @@ module.exports = {
   wrapingCallback,
   getEmployee,
   getSalary,
-  promise, 
-  customAsyncFunction
+  promise,
+  customAsyncFunction,
 };

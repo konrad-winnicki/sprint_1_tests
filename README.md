@@ -11,12 +11,10 @@ This module was established to learn unit testing with `Jest`. It contains examp
 - [Usage](#usage)
 
 <br>
-<br>
 
 ## Introduction
-In this project you will find `app` folder containing files with functions, classes. Additinaly it containd `.js` file and `.json` files with examples of data used by some function. In the `__tests__` folder you will find coresponding files with tests.
+In this project you will find `app` folder containing files with functions and classes. Additinaly it containd `.js` file and `.json` files with examples of data used by some function. In the `__tests__` folder you will find coresponding files with tests.
 
-<br>
 <br> 
 
 ## Instalation
@@ -26,12 +24,11 @@ $ npm install <dev_dependencies> --save-dev
 ```
 
 <br>
-<br>
 
 ## Usage
 Using command line you can run tests from the particular file or run test from all provided files simultaneously.
 ```shell
-$ npm run nivel_1 // use first part of file name befor dot
+$ npm run nivel_1 // use first part of test file name before dot.
 ```
 or 
 ```shell

@@ -5,64 +5,63 @@ l'exercici fent un mock del fitxer JSON.*/
 
 const fs = require("fs");
 
-
 function readFile(directory, fileName) {
-    const totalPath = directory + fileName;
-    try {
-      return fs.readFileSync(totalPath, "utf-8");
-    } catch (err) {
-      throw err;
-    }
+  const totalPath = directory + fileName;
+  try {
+    return fs.readFileSync(totalPath, "utf-8");
+  } catch (err) {
+    throw err;
   }
-  
-  function getEmployee(id, directory, fileName) {
-    try {
-      const data = JSON.parse(readFile(directory, fileName));
-  
-      return new Promise(function (resolved, rejected) {
-        try {
-          data.forEach((employee) => {
-            if (employee.id === undefined || isNaN(id)) {
-              rejected(new Error("I can not process this data"));
-            }
-            if (employee.id === id) {
-              resolved(employee);
-            }
-          });
-  
-          rejected(new Error("No such employee"));
-        } catch (err) {
-          rejected(new Error("I can not process this data"));
-        }
-      });
-    } catch (err) {
-      throw err;
-    }
-  }
-  
-  function getSalary(employee, directory, fileName) {
-    try {
-      const data = JSON.parse(readFile(directory, fileName));
-  
-      return new Promise(function (resolved, rejected) {
-        try {
-          data.forEach((salary) => {
-            if (salary.id === undefined || employee.id === undefined) {
-              rejected(new Error("I can not process this data"));
-            }
-            if (salary.id === employee.id) {
-              resolved(salary.salary);
-            }
-          });
-  
-          rejected(new Error("Salary not asignated"));
-        } catch (err) {
-          rejected(new Error("I can not process this data"));
-        }
-      });
-    } catch (err) {
-      throw err;
-    }
-  }
+}
 
-  module.exports = {getEmployee, getSalary, readFile };
+function getEmployee(id, directory, fileName, readFileCallback) {
+  try {
+    const data = JSON.parse(readFileCallback(directory, fileName));
+
+    return new Promise(function (resolved, rejected) {
+      try {
+        data.forEach((employee) => {
+          if (employee.id === undefined || isNaN(id)) {
+            rejected(new Error("I can not process this data"));
+          }
+          if (employee.id === id) {
+            resolved(employee);
+          }
+        });
+
+        rejected(new Error("No such employee"));
+      } catch (err) {
+        rejected(new Error("I can not process this data"));
+      }
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
+function getSalary(employee, directory, fileName, readFileCallback) {
+  try {
+    const data = JSON.parse(readFileCallback(directory, fileName));
+
+    return new Promise(function (resolved, rejected) {
+      try {
+        data.forEach((salary) => {
+          if (salary.id === undefined || employee.id === undefined) {
+            rejected(new Error("I can not process this data"));
+          }
+          if (salary.id === employee.id) {
+            resolved(salary.salary);
+          }
+        });
+
+        rejected(new Error("Salary not asignated"));
+      } catch (err) {
+        rejected(new Error("I can not process this data"));
+      }
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
+module.exports = { getEmployee, getSalary, readFile };

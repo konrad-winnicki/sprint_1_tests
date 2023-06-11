@@ -1,1 +1,5 @@
-[{"id":1,"name":"Linux Torvalds"},{"id":2,"name":"Bill Gates"},{"id":3,"name":"Jeff Bezos"}]
+[
+  { "id": 1, "name": "Linux Torvalds" },
+  { "id": 2, "name": "Bill Gates" },
+  { "id": 3, "name": "Jeff Bezos" }
+]
